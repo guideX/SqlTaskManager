@@ -5,9 +5,25 @@ using System.Windows.Forms;
 using static System.Windows.Forms.ListViewItem;
 public partial class frmMain : Form {
     /// <summary>
+    /// Order By Column
+    /// </summary>
+    private string _orderByColumn = "[SPID]";
+    /// <summary>
+    /// Selected Item Index
+    /// </summary>
+    private int? _selectedItemIndex = 0;
+    /// <summary>
     /// Settings Ini File
     /// </summary>
     private string _settingsIniFile = Application.StartupPath + @"\settings.ini";
+    /// <summary>
+    /// Current Column Sort
+    /// </summary>
+    private int _currentColumnSort = 0;
+    /// <summary>
+    /// Direction
+    /// </summary>
+    private int _currentColumnSortDirection = 0;
     /// <summary>
     /// Constructor
     /// </summary>
@@ -15,27 +31,97 @@ public partial class frmMain : Form {
         InitializeComponent();
         try {
             this.FormClosed += frmMain_FormClosed;
+            lvwProcesses.ColumnClick += lvwProcesses_ColumnClick;
             if (lblError.Text != "") lblError.Text = "";
-            lvwProcesses.Columns.Add("SPID", IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "SPIDWidth", 100));
-            lvwProcesses.Columns.Add("Status", IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "StatusWidth", 100));
-            lvwProcesses.Columns.Add("Login", IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "LoginWidth", 100));
-            lvwProcesses.Columns.Add("HostName", IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "HostNameWidth", 100));
-            lvwProcesses.Columns.Add("BlkBy", IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "BlkByWidth", 100));
-            lvwProcesses.Columns.Add("DBName", IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "DBNameWidth", 100));
-            lvwProcesses.Columns.Add("Command", IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "CommandWidth", 100));
-            lvwProcesses.Columns.Add("CpuTime", IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "CpuTimeWidth", 100));
-            lvwProcesses.Columns.Add("DiskIO", IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "DiskIOWidth", 100));
-            lvwProcesses.Columns.Add("LastBatch", IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "LastBatchWidth", 100));
-            lvwProcesses.Columns.Add("ProgramName", IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "ProgramNameWidth", 100));
-            lvwProcesses.Columns.Add("SPID2", IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "SPID2Width", 100));
-            lvwProcesses.Columns.Add("RequestID", IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "RequestIDWidth", 100));
+            lvwProcesses.Columns.Add(new ColumnHeader() { Text = "SPID", Tag = "Numeric", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "SPIDWidth", 100) });
+            lvwProcesses.Columns.Add(new ColumnHeader() { Text = "Status", Tag = "Text", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "StatusWidth", 100) });
+            lvwProcesses.Columns.Add(new ColumnHeader() { Text = "Login", Tag = "Text", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "LoginWidth", 100) });
+            lvwProcesses.Columns.Add(new ColumnHeader() { Text = "Host Name", Tag = "Text", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "HostNameWidth", 100) });
+            lvwProcesses.Columns.Add(new ColumnHeader() { Text = "Block By", Tag = "Text", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "BlkByWidth", 100) });
+            lvwProcesses.Columns.Add(new ColumnHeader() { Text = "Database Name Width", Tag = "Text", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "DbNameWidth", 100) });
+            lvwProcesses.Columns.Add(new ColumnHeader() { Text = "Command", Tag = "Text", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "CommandWidth", 100) });
+            lvwProcesses.Columns.Add(new ColumnHeader() { Text = "Cpu Time", Tag = "Numeric", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "CpuTimeWidth", 100) });
+            lvwProcesses.Columns.Add(new ColumnHeader() { Text = "Disk IO", Tag = "Numeric", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "DiskIOWidth", 100) });
+            lvwProcesses.Columns.Add(new ColumnHeader() { Text = "Last Batch", Tag = "Text", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "LastBatchWidth", 100) });
+            lvwProcesses.Columns.Add(new ColumnHeader() { Text = "Program Name", Tag = "Text", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "ProgramNameWidth", 100) });
+            lvwProcesses.Columns.Add(new ColumnHeader() { Text = "SPID2", Tag = "Numeric", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "SPID2Width", 100) });
+            lvwProcesses.Columns.Add(new ColumnHeader() { Text = "RequestID", Tag = "Numeric", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "RequestIDWidth", 100) });
+            lvwProcesses.SetDoubleBuffered();
+            lvwProcesses.ListViewItemSorter = new ListViewSorter();
+
+            lvwBigTables.Columns.Add(new ColumnHeader() { Text = "Table", Tag = "Text", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "TableWidth", 100) });
+            lvwBigTables.Columns.Add(new ColumnHeader() { Text = "Used MB", Tag = "Text", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "UsedMBWidth", 100) });
+            lvwBigTables.Columns.Add(new ColumnHeader() { Text = "Allocated MB", Tag = "Text", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "AllocatedMBWidth", 100) });
+
             this.Left = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "MainLeft", 0);
             this.Top = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "MainTop", 0);
-            IniFileHelper.WriteIni(_settingsIniFile, "Settings", "MainY", this.Location.Y.ToString());
-            lvwProcesses.SetDoubleBuffered();
+            this.Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "MainWidth", 300);
+            this.Height = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "MainHeight", 600);
         } catch (Exception ex) {
             lblError.Text = ex.Message;
         }
+    }
+    /// <summary>
+    /// Process Column Click
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void lvwProcesses_ColumnClick(object? sender, ColumnClickEventArgs e) {
+        tmrRefresh.Enabled = false;
+        if (_currentColumnSort != e.Column) {
+            _currentColumnSort = e.Column;
+            _currentColumnSortDirection = 0;
+        } else {
+            if (_currentColumnSortDirection == 0) {
+                _currentColumnSortDirection = 1;
+            } else {
+                _currentColumnSortDirection = 0;
+            }
+        }
+        switch (_currentColumnSort + 1) {
+            case 1:
+                _orderByColumn = "[SPID]";
+                break;
+            case 2:
+                _orderByColumn = "[Status]";
+                break;
+            case 3:
+                _orderByColumn = "[Login]";
+                break;
+            case 4:
+                _orderByColumn = "[HostName]";
+                break;
+            case 5:
+                _orderByColumn = "[BlkBy]";
+                break;
+            case 6:
+                _orderByColumn = "[DBName]";
+                break;
+            case 7:
+                _orderByColumn = "[Command]";
+                break;
+            case 8:
+                _orderByColumn = "[CpuTime]";
+                break;
+            case 9:
+                _orderByColumn = "[DiskIO]";
+                break;
+            case 10:
+                _orderByColumn = "[LastBatch]";
+                break;
+            case 11:
+                _orderByColumn = "[ProgramName]";
+                break;
+            case 12:
+                _orderByColumn = "[SPID2]";
+                break;
+            case 13:
+                _orderByColumn = "[RequestID]";
+                break;
+        }
+        lvwProcesses.Items.Clear();
+        lvwProcesses.Tag = _currentColumnSort.ToString();
+        UpdateNow();
     }
     /// <summary>
     /// Form Closed
@@ -58,8 +144,6 @@ public partial class frmMain : Form {
         IniFileHelper.WriteIni(_settingsIniFile, "Settings", "RequestIDWidth", lvwProcesses.Columns[12].Width.ToString());
         IniFileHelper.WriteIni(_settingsIniFile, "Settings", "MainWidth", this.ClientSize.Width.ToString());
         IniFileHelper.WriteIni(_settingsIniFile, "Settings", "MainHeight", this.ClientSize.Height.ToString());
-        IniFileHelper.WriteIni(_settingsIniFile, "Settings", "MainX", this.Location.X.ToString());
-        IniFileHelper.WriteIni(_settingsIniFile, "Settings", "MainY", this.Location.Y.ToString());
         IniFileHelper.WriteIni(_settingsIniFile, "Settings", "MainLeft", this.Left.ToString());
         IniFileHelper.WriteIni(_settingsIniFile, "Settings", "MainTop", this.Top.ToString());
     }
@@ -81,65 +165,157 @@ public partial class frmMain : Form {
     /// Get Db
     /// </summary>
     /// <returns></returns>
-    private IDatabase? GetDb() {
+    private IDatabase GetDb() {
+        if (lblError.Text != "") lblError.Text = "";
+        var connectionString = IniFileHelper.ReadIni(_settingsIniFile, "Settings", "ConnectionString", "");
+        return DatabaseConfiguration.Build()
+            .WithoutAutoSelect()
+            .UsingProvider<SqlServerDatabaseProvider>()
+            .UsingConnectionString(connectionString)
+            .Create();
+    }
+    /// <summary>
+    /// Update Big Tables
+    /// </summary>
+    private void UpdateBigTables() {
         try {
-            if (lblError.Text != "") lblError.Text = "";
-            var connectionString = IniFileHelper.ReadIni(_settingsIniFile, "Settings", "ConnectionString", "");
-            if (!string.IsNullOrEmpty(connectionString)) {
-                return DatabaseConfiguration.Build()
-                    .WithoutAutoSelect()
-                    .UsingProvider<SqlServerDatabaseProvider>()
-                    .UsingConnectionString(connectionString)
-                    .Create();
-            } else {
-                return null;
+            using (var db = GetDb()) {
+                if (db != null) {
+                    var sql = @"
+SELECT TOP 20 schema_name(tab.schema_id) + '.' + tab.name as [table], 
+	cast(sum(spc.used_pages * 8)/1024.00 as numeric(36, 2)) as used_mb,
+    cast(sum(spc.total_pages * 8)/1024.00 as numeric(36, 2)) as allocated_mb
+from sys.tables tab
+join sys.indexes ind 
+     on tab.object_id = ind.object_id
+join sys.partitions part 
+     on ind.object_id = part.object_id and ind.index_id = part.index_id
+join sys.allocation_units spc
+     on part.partition_id = spc.container_id
+group by schema_name(tab.schema_id) + '.' + tab.name
+order by sum(spc.used_pages) desc;
+";
+                    var bigTables = db.Fetch<LargeTableModel>(sql).ToList();
+                    if (bigTables != null && bigTables.Any()) {
+                        foreach (var bigTable in bigTables) {
+                            var subItems = new List<ListViewSubItem>();
+                            subItems.Add(new ListViewSubItem()
+                            {
+                                Name = "Table",
+                                Text = bigTable.table
+                            });
+                            subItems.Add(new ListViewSubItem()
+                            {
+                                Name = "Used MB",
+                                Text = bigTable.used_mb
+                            });
+                            subItems.Add(new ListViewSubItem()
+                            {
+                                Name = "Allocated MB",
+                                Text = bigTable.allocated_mb
+                            });
+                            var listViewItem = new ListViewItem(subItems.ToArray(), 0);
+                            lvwBigTables.Items.Add(listViewItem);
+                        }
+                    }
+                }
             }
         } catch (Exception ex) {
             lblError.Text = ex.Message;
-            return null;
         }
     }
     /// <summary>
-    /// Refresh List
+    /// Update Now
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void tmrRefresh_Tick(object sender, EventArgs e) {
+    private void UpdateNow() {
         try {
             if (lblError.Text != "") lblError.Text = "";
             List<SpWho2Model> spWho2 = new List<SpWho2Model>();
-            using (var db = GetDb()) {
-                if (db != null) spWho2 = db.Fetch<SpWho2Model>("EXEC [dbo].[SP_WHO2];").ToList();
-            }
+            var orderBy = "";
+            orderBy = "ORDER BY " + _orderByColumn + " " + (_currentColumnSortDirection == 0 ? "ASC" : "DESC");
+            label1.Text = orderBy;
+            var sql = @"
+                IF (OBJECT_ID('tempdb..#spWho2Temp790') IS NOT NULL) BEGIN DROP TABLE #spWho2Temp790 END
+                CREATE TABLE #spWho2Temp790 (
+	                [SPID] INT NULL,
+	                [Status] VARCHAR(200) NULL,
+	                [Login] VARCHAR(200) NULL,
+	                [HostName] VARCHAR(200) NULL,
+	                [BlkBy] VARCHAR(200) NULL,
+	                [DBName] VARCHAR(200) NULL,
+	                [Command] VARCHAR(200) NULL,
+	                [CpuTime] INT NULL,
+	                [DiskIO] INT NULL,
+	                [LastBatch] VARCHAR(200) NULL,
+	                [ProgramName] VARCHAR(200) NULL,
+	                [SPID2] INT NULL,
+	                [RequestID] INT NULL
+                );
+                INSERT INTO #spWho2Temp790
+                EXEC [dbo].[SP_WHO2];
+                SELECT
+	                *
+                FROM
+	                #spWho2Temp790
+	            " + orderBy + @";
+                IF (OBJECT_ID('tempdb..#spWho2Temp790') IS NOT NULL) BEGIN DROP TABLE #spWho2Temp790 END;";
+            using (var db = GetDb()) spWho2 = db.Fetch<SpWho2Model>(sql).ToList();
+
             if (spWho2.Any()) {
                 var spids = new List<string>();
                 lvwProcesses.BeginUpdate();
                 try {
+                    var selectedText = new List<string>();
+                    foreach (var item in lvwProcesses.SelectedItems) {
+                        selectedText.Add(((ListViewItem)item).Text);
+                    }
+                    lvwProcesses.Items.Clear();
                     foreach (var item in spWho2) {
-                        var findItem = lvwProcesses.FindItemWithText(item.SPID);
                         var lvsi = new List<ListViewSubItem>();
-                        lvsi.Add(new ListViewSubItem() { Text = item.SPID });
-                        lvsi.Add(new ListViewSubItem() { Text = item.Status });
-                        lvsi.Add(new ListViewSubItem() { Text = item.Login });
-                        lvsi.Add(new ListViewSubItem() { Text = item.HostName });
-                        lvsi.Add(new ListViewSubItem() { Text = item.BlkBy, ForeColor = Color.Red });
-                        lvsi.Add(new ListViewSubItem() { Text = item.DBName });
-                        lvsi.Add(new ListViewSubItem() { Text = item.Command });
-                        lvsi.Add(new ListViewSubItem() { Text = item.CpuTime });
-                        lvsi.Add(new ListViewSubItem() { Text = item.DiskIO });
-                        lvsi.Add(new ListViewSubItem() { Text = item.LastBatch });
-                        lvsi.Add(new ListViewSubItem() { Text = item.ProgramName });
-                        lvsi.Add(new ListViewSubItem() { Text = item.SPID2 });
-                        lvsi.Add(new ListViewSubItem() { Text = item.RequestID });
+                        lvsi.Add(new ListViewSubItem() { Text = item.SPID.ToString(), Tag = "Numeric" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.Status, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.Login, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.HostName, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.BlkBy, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.DBName, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.Command, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.CpuTime.ToString(), Tag = "Numeric" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.DiskIO.ToString(), Tag = "Numeric" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.LastBatch, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.ProgramName, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.SPID2.ToString(), Tag = "Numeric" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.RequestID.ToString(), Tag = "Numeric" });
+                        var listViewItem = new ListViewItem(lvsi.ToArray(), 0);
+                        if (selectedText.Contains(listViewItem.Text)) listViewItem.Selected = true;
+                        var newItem = lvwProcesses.Items.Add(listViewItem);
+                        spids.Add(item.SPID.ToString());
+                    }
+                    /*
+                    foreach (var item in spWho2) {
+                        var findItem = lvwProcesses.FindItemWithText(item.SPID.ToString());
+                        var lvsi = new List<ListViewSubItem>();
+                        lvsi.Add(new ListViewSubItem() { Text = item.SPID.ToString(), Tag = "Numeric" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.Status, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.Login, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.HostName, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.BlkBy, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.DBName, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.Command, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.CpuTime.ToString(), Tag = "Numeric" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.DiskIO.ToString(), Tag = "Numeric" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.LastBatch, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.ProgramName, Tag = "Text" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.SPID2.ToString(), Tag = "Numeric" });
+                        lvsi.Add(new ListViewSubItem() { Text = item.RequestID.ToString(), Tag = "Numeric" });
                         if (findItem != null) {
-                            spids.Add(item.SPID);
+                            spids.Add(item.SPID.ToString());
                             for (int i = 0; i < findItem.SubItems.Count; i++) {
                                 if (findItem.SubItems[i].Text != lvsi[i].Text) findItem.SubItems[i].Text = lvsi[i].Text;
                             }
                         } else {
                             var listViewItem = new ListViewItem(lvsi.ToArray(), 0);
                             var newItem = lvwProcesses.Items.Add(listViewItem);
-                            spids.Add(item.SPID);
+                            spids.Add(item.SPID.ToString());
                         }
                     }
                     var itemsToRemove = new List<ListViewItem>();
@@ -151,6 +327,7 @@ public partial class frmMain : Form {
                     foreach (var item in itemsToRemove) {
                         lvwProcesses.Items.Remove(item);
                     }
+                    */
                 } finally {
                     lvwProcesses.EndUpdate();
                 }
@@ -158,6 +335,18 @@ public partial class frmMain : Form {
         } catch (Exception ex) {
             lblError.Text = ex.Message;
             if (lvwProcesses.Items.Count != 0) lvwProcesses.Clear();
+        }
+    }
+    /// <summary>
+    /// Refresh List
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void tmrRefresh_Tick(object sender, EventArgs e) {
+        try {
+            UpdateNow();
+        } catch (Exception ex) {
+            lblError.Text = ex.Message;
         }
     }
     /// <summary>
@@ -185,5 +374,17 @@ public partial class frmMain : Form {
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void frmMain_Load(object sender, EventArgs e) {
+        UpdateNow();
+        UpdateBigTables();
+        tmrRefresh.Interval = Convert.ToInt32(IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "TimerInterval", 1500));
+        tmrRefresh.Enabled = true;
+    }
+    /// <summary>
+    /// Big Tables Refresh
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void tmrBigTablesRefresh_Tick(object sender, EventArgs e) {
+        UpdateBigTables();
     }
 }

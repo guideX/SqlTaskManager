@@ -29,24 +29,30 @@ partial class frmMain {
         tabPage1 = new TabPage();
         splitContainer1 = new SplitContainer();
         lvwProcesses = new ListView();
+        label1 = new Label();
         lblError = new Label();
         cmdKill = new Button();
+        tabPage2 = new TabPage();
+        lvwBigTables = new ListView();
         mnuFile = new MenuStrip();
         toolStripMenuItem1 = new ToolStripMenuItem();
         settingsToolStripMenuItem = new ToolStripMenuItem();
         tmrRefresh = new System.Windows.Forms.Timer(components);
+        tmrBigTablesRefresh = new System.Windows.Forms.Timer(components);
         tabControl1.SuspendLayout();
         tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
         splitContainer1.Panel1.SuspendLayout();
         splitContainer1.Panel2.SuspendLayout();
         splitContainer1.SuspendLayout();
+        tabPage2.SuspendLayout();
         mnuFile.SuspendLayout();
         SuspendLayout();
         // 
         // tabControl1
         // 
         tabControl1.Controls.Add(tabPage1);
+        tabControl1.Controls.Add(tabPage2);
         tabControl1.Dock = DockStyle.Fill;
         tabControl1.Location = new Point(0, 24);
         tabControl1.Name = "tabControl1";
@@ -80,6 +86,7 @@ partial class frmMain {
         // 
         // splitContainer1.Panel2
         // 
+        splitContainer1.Panel2.Controls.Add(label1);
         splitContainer1.Panel2.Controls.Add(lblError);
         splitContainer1.Panel2.Controls.Add(cmdKill);
         splitContainer1.Size = new Size(767, 643);
@@ -88,6 +95,7 @@ partial class frmMain {
         // 
         // lvwProcesses
         // 
+        lvwProcesses.AutoArrange = false;
         lvwProcesses.BackColor = Color.White;
         lvwProcesses.BorderStyle = BorderStyle.None;
         lvwProcesses.Dock = DockStyle.Fill;
@@ -98,6 +106,15 @@ partial class frmMain {
         lvwProcesses.TabIndex = 0;
         lvwProcesses.UseCompatibleStateImageBehavior = false;
         lvwProcesses.View = View.Details;
+        // 
+        // label1
+        // 
+        label1.AutoSize = true;
+        label1.Location = new Point(508, 13);
+        label1.Name = "label1";
+        label1.Size = new Size(38, 15);
+        label1.TabIndex = 2;
+        label1.Text = "label1";
         // 
         // lblError
         // 
@@ -118,6 +135,28 @@ partial class frmMain {
         cmdKill.Text = "End Process Now";
         cmdKill.UseVisualStyleBackColor = true;
         cmdKill.Click += cmdKill_Click;
+        // 
+        // tabPage2
+        // 
+        tabPage2.Controls.Add(lvwBigTables);
+        tabPage2.Location = new Point(4, 24);
+        tabPage2.Name = "tabPage2";
+        tabPage2.Padding = new Padding(3);
+        tabPage2.Size = new Size(773, 649);
+        tabPage2.TabIndex = 1;
+        tabPage2.Text = "Big Tables";
+        tabPage2.UseVisualStyleBackColor = true;
+        // 
+        // lvwBigTables
+        // 
+        lvwBigTables.BorderStyle = BorderStyle.None;
+        lvwBigTables.Dock = DockStyle.Fill;
+        lvwBigTables.Location = new Point(3, 3);
+        lvwBigTables.Name = "lvwBigTables";
+        lvwBigTables.Size = new Size(767, 643);
+        lvwBigTables.TabIndex = 0;
+        lvwBigTables.UseCompatibleStateImageBehavior = false;
+        lvwBigTables.View = View.Details;
         // 
         // mnuFile
         // 
@@ -144,9 +183,13 @@ partial class frmMain {
         // 
         // tmrRefresh
         // 
-        tmrRefresh.Enabled = true;
-        tmrRefresh.Interval = 500;
+        tmrRefresh.Interval = 1500;
         tmrRefresh.Tick += tmrRefresh_Tick;
+        // 
+        // tmrBigTablesRefresh
+        // 
+        tmrBigTablesRefresh.Interval = 60000;
+        tmrBigTablesRefresh.Tick += tmrBigTablesRefresh_Tick;
         // 
         // frmMain
         // 
@@ -168,6 +211,7 @@ partial class frmMain {
         splitContainer1.Panel2.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
         splitContainer1.ResumeLayout(false);
+        tabPage2.ResumeLayout(false);
         mnuFile.ResumeLayout(false);
         mnuFile.PerformLayout();
         ResumeLayout(false);
@@ -186,4 +230,8 @@ partial class frmMain {
     private System.Windows.Forms.Timer tmrRefresh;
     private Button cmdKill;
     private Label lblError;
+    private Label label1;
+    private TabPage tabPage2;
+    private ListView lvwBigTables;
+    private System.Windows.Forms.Timer tmrBigTablesRefresh;
 }

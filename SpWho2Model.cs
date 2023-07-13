@@ -8,7 +8,7 @@
         /// <summary>
         /// SPID
         /// </summary>
-        public required string SPID { get; set; }
+        public required int SPID { get; set; }
         /// <summary>
         /// Status
         /// </summary>
@@ -36,11 +36,11 @@
         /// <summary>
         /// Cpu Time
         /// </summary>
-        public required string CpuTime { get; set; }
+        public required int CpuTime { get; set; }
         /// <summary>
         /// Disk IO
         /// </summary>
-        public required string DiskIO { get; set; }
+        public required int DiskIO { get; set; }
         /// <summary>
         /// Last Batch
         /// </summary>
@@ -52,11 +52,11 @@
         /// <summary>
         /// SPID2
         /// </summary>
-        public required string SPID2 { get; set; }
+        public required int SPID2 { get; set; }
         /// <summary>
         /// RequestID
         /// </summary>
-        public required string RequestID { get; set; }
+        public required int RequestID { get; set; }
         /// <summary>
         /// Timestamp
         /// </summary>
