@@ -3,15 +3,13 @@ using PetaPoco;
 using PetaPoco.Providers;
 using System.Windows.Forms;
 using static System.Windows.Forms.ListViewItem;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
 public partial class frmMain : Form {
     /// <summary>
     /// Order By Column
     /// </summary>
     private string _orderByColumn = "[SPID]";
-    /// <summary>
-    /// Selected Item Index
-    /// </summary>
-    private int? _selectedItemIndex = 0;
     /// <summary>
     /// Settings Ini File
     /// </summary>
@@ -48,11 +46,11 @@ public partial class frmMain : Form {
             lvwProcesses.Columns.Add(new ColumnHeader() { Text = "RequestID", Tag = "Numeric", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "RequestIDWidth", 100) });
             lvwProcesses.SetDoubleBuffered();
             lvwProcesses.ListViewItemSorter = new ListViewSorter();
-
             lvwBigTables.Columns.Add(new ColumnHeader() { Text = "Table", Tag = "Text", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "TableWidth", 100) });
             lvwBigTables.Columns.Add(new ColumnHeader() { Text = "Used MB", Tag = "Text", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "UsedMBWidth", 100) });
             lvwBigTables.Columns.Add(new ColumnHeader() { Text = "Allocated MB", Tag = "Text", Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "AllocatedMBWidth", 100) });
-
+            lvwBigTables.SetDoubleBuffered();
+            //lvwBigTables.ListViewItemSorter = new ListViewSorter();
             this.Left = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "MainLeft", 0);
             this.Top = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "MainTop", 0);
             this.Width = IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "MainWidth", 300);
@@ -182,7 +180,7 @@ public partial class frmMain : Form {
             using (var db = GetDb()) {
                 if (db != null) {
                     var sql = @"
-SELECT TOP 20 schema_name(tab.schema_id) + '.' + tab.name as [table], 
+SELECT TOP 100 schema_name(tab.schema_id) + '.' + tab.name as [table], 
 	cast(sum(spc.used_pages * 8)/1024.00 as numeric(36, 2)) as used_mb,
     cast(sum(spc.total_pages * 8)/1024.00 as numeric(36, 2)) as allocated_mb
 from sys.tables tab
@@ -197,25 +195,24 @@ order by sum(spc.used_pages) desc;
 ";
                     var bigTables = db.Fetch<LargeTableModel>(sql).ToList();
                     if (bigTables != null && bigTables.Any()) {
-                        foreach (var bigTable in bigTables) {
-                            var subItems = new List<ListViewSubItem>();
-                            subItems.Add(new ListViewSubItem()
-                            {
-                                Name = "Table",
-                                Text = bigTable.table
-                            });
-                            subItems.Add(new ListViewSubItem()
-                            {
-                                Name = "Used MB",
-                                Text = bigTable.used_mb
-                            });
-                            subItems.Add(new ListViewSubItem()
-                            {
-                                Name = "Allocated MB",
-                                Text = bigTable.allocated_mb
-                            });
-                            var listViewItem = new ListViewItem(subItems.ToArray(), 0);
-                            lvwBigTables.Items.Add(listViewItem);
+                        lvwBigTables.BeginUpdate();
+                        try {
+                            var selectedItems = new List<string>();
+                            foreach (var item in lvwBigTables.SelectedItems) {
+                                selectedItems.Add(((ListViewItem)item).Text);
+                            }
+                            lvwBigTables.Items.Clear();
+                            foreach (var bigTable in bigTables) {
+                                var subItems = new List<ListViewSubItem>();
+                                subItems.Add(new ListViewSubItem() { Name = "Table", Text = bigTable.table });
+                                subItems.Add(new ListViewSubItem() { Name = "Used MB", Text = bigTable.used_mb });
+                                subItems.Add(new ListViewSubItem() { Name = "Allocated MB", Text = bigTable.allocated_mb });
+                                var listViewItem = new ListViewItem(subItems.ToArray(), 0);
+                                if (selectedItems.Contains(listViewItem.Text)) listViewItem.Selected = true;
+                                lvwBigTables.Items.Add(listViewItem);
+                            }
+                        } finally {
+                            lvwBigTables.EndUpdate();
                         }
                     }
                 }
@@ -233,7 +230,6 @@ order by sum(spc.used_pages) desc;
             List<SpWho2Model> spWho2 = new List<SpWho2Model>();
             var orderBy = "";
             orderBy = "ORDER BY " + _orderByColumn + " " + (_currentColumnSortDirection == 0 ? "ASC" : "DESC");
-            label1.Text = orderBy;
             var sql = @"
                 IF (OBJECT_ID('tempdb..#spWho2Temp790') IS NOT NULL) BEGIN DROP TABLE #spWho2Temp790 END
                 CREATE TABLE #spWho2Temp790 (
@@ -263,6 +259,7 @@ order by sum(spc.used_pages) desc;
 
             if (spWho2.Any()) {
                 var spids = new List<string>();
+                var topItemIndex = lvwProcesses.TopItem != null ? (int?)lvwProcesses.TopItem.Index : null;
                 lvwProcesses.BeginUpdate();
                 try {
                     var selectedText = new List<string>();
@@ -290,45 +287,8 @@ order by sum(spc.used_pages) desc;
                         var newItem = lvwProcesses.Items.Add(listViewItem);
                         spids.Add(item.SPID.ToString());
                     }
-                    /*
-                    foreach (var item in spWho2) {
-                        var findItem = lvwProcesses.FindItemWithText(item.SPID.ToString());
-                        var lvsi = new List<ListViewSubItem>();
-                        lvsi.Add(new ListViewSubItem() { Text = item.SPID.ToString(), Tag = "Numeric" });
-                        lvsi.Add(new ListViewSubItem() { Text = item.Status, Tag = "Text" });
-                        lvsi.Add(new ListViewSubItem() { Text = item.Login, Tag = "Text" });
-                        lvsi.Add(new ListViewSubItem() { Text = item.HostName, Tag = "Text" });
-                        lvsi.Add(new ListViewSubItem() { Text = item.BlkBy, Tag = "Text" });
-                        lvsi.Add(new ListViewSubItem() { Text = item.DBName, Tag = "Text" });
-                        lvsi.Add(new ListViewSubItem() { Text = item.Command, Tag = "Text" });
-                        lvsi.Add(new ListViewSubItem() { Text = item.CpuTime.ToString(), Tag = "Numeric" });
-                        lvsi.Add(new ListViewSubItem() { Text = item.DiskIO.ToString(), Tag = "Numeric" });
-                        lvsi.Add(new ListViewSubItem() { Text = item.LastBatch, Tag = "Text" });
-                        lvsi.Add(new ListViewSubItem() { Text = item.ProgramName, Tag = "Text" });
-                        lvsi.Add(new ListViewSubItem() { Text = item.SPID2.ToString(), Tag = "Numeric" });
-                        lvsi.Add(new ListViewSubItem() { Text = item.RequestID.ToString(), Tag = "Numeric" });
-                        if (findItem != null) {
-                            spids.Add(item.SPID.ToString());
-                            for (int i = 0; i < findItem.SubItems.Count; i++) {
-                                if (findItem.SubItems[i].Text != lvsi[i].Text) findItem.SubItems[i].Text = lvsi[i].Text;
-                            }
-                        } else {
-                            var listViewItem = new ListViewItem(lvsi.ToArray(), 0);
-                            var newItem = lvwProcesses.Items.Add(listViewItem);
-                            spids.Add(item.SPID.ToString());
-                        }
-                    }
-                    var itemsToRemove = new List<ListViewItem>();
-                    foreach (var listItem in lvwProcesses.Items) {
-                        if (!spids.Contains(((ListViewItem)listItem).Text)) {
-                            itemsToRemove.Add((ListViewItem)listItem);
-                        }
-                    }
-                    foreach (var item in itemsToRemove) {
-                        lvwProcesses.Items.Remove(item);
-                    }
-                    */
                 } finally {
+                    if (topItemIndex != null) lvwProcesses.TopItem = lvwProcesses.Items[topItemIndex.Value];
                     lvwProcesses.EndUpdate();
                 }
             }
@@ -377,7 +337,9 @@ order by sum(spc.used_pages) desc;
         UpdateNow();
         UpdateBigTables();
         tmrRefresh.Interval = Convert.ToInt32(IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "TimerInterval", 1500));
+        tmrBigTablesRefresh.Interval = tmrRefresh.Interval;
         tmrRefresh.Enabled = true;
+        tmrBigTablesRefresh.Enabled = true;
     }
     /// <summary>
     /// Big Tables Refresh

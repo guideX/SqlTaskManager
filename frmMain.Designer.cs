@@ -25,11 +25,11 @@ partial class frmMain {
     /// </summary>
     private void InitializeComponent() {
         components = new System.ComponentModel.Container();
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
         tabControl1 = new TabControl();
         tabPage1 = new TabPage();
         splitContainer1 = new SplitContainer();
         lvwProcesses = new ListView();
-        label1 = new Label();
         lblError = new Label();
         cmdKill = new Button();
         tabPage2 = new TabPage();
@@ -86,7 +86,6 @@ partial class frmMain {
         // 
         // splitContainer1.Panel2
         // 
-        splitContainer1.Panel2.Controls.Add(label1);
         splitContainer1.Panel2.Controls.Add(lblError);
         splitContainer1.Panel2.Controls.Add(cmdKill);
         splitContainer1.Size = new Size(767, 643);
@@ -107,15 +106,6 @@ partial class frmMain {
         lvwProcesses.UseCompatibleStateImageBehavior = false;
         lvwProcesses.View = View.Details;
         // 
-        // label1
-        // 
-        label1.AutoSize = true;
-        label1.Location = new Point(508, 13);
-        label1.Name = "label1";
-        label1.Size = new Size(38, 15);
-        label1.TabIndex = 2;
-        label1.Text = "label1";
-        // 
         // lblError
         // 
         lblError.AutoSize = true;
@@ -128,9 +118,10 @@ partial class frmMain {
         // 
         // cmdKill
         // 
-        cmdKill.Location = new Point(5, 12);
+        cmdKill.Dock = DockStyle.Right;
+        cmdKill.Location = new Point(647, 0);
         cmdKill.Name = "cmdKill";
-        cmdKill.Size = new Size(120, 31);
+        cmdKill.Size = new Size(120, 61);
         cmdKill.TabIndex = 0;
         cmdKill.Text = "End Process Now";
         cmdKill.UseVisualStyleBackColor = true;
@@ -198,6 +189,7 @@ partial class frmMain {
         ClientSize = new Size(781, 701);
         Controls.Add(tabControl1);
         Controls.Add(mnuFile);
+        Icon = (Icon)resources.GetObject("$this.Icon");
         MainMenuStrip = mnuFile;
         MinimumSize = new Size(0, 600);
         Name = "frmMain";
@@ -230,7 +222,6 @@ partial class frmMain {
     private System.Windows.Forms.Timer tmrRefresh;
     private Button cmdKill;
     private Label lblError;
-    private Label label1;
     private TabPage tabPage2;
     private ListView lvwBigTables;
     private System.Windows.Forms.Timer tmrBigTablesRefresh;
