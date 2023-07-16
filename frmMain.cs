@@ -1,11 +1,11 @@
 namespace SqlTaskManager;
+using System.Linq;
 using PetaPoco;
 using PetaPoco.Providers;
 using System.Windows.Forms;
 using static System.Windows.Forms.ListViewItem;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-
 public partial class frmMain : Form {
+    #region "private variables"
     /// <summary>
     /// Order By Column
     /// </summary>
@@ -22,6 +22,8 @@ public partial class frmMain : Form {
     /// Direction
     /// </summary>
     private int _currentColumnSortDirection = 0;
+    #endregion
+    #region "public methods"
     /// <summary>
     /// Constructor
     /// </summary>
@@ -59,6 +61,15 @@ public partial class frmMain : Form {
             lblError.Text = ex.Message;
         }
     }
+    /// <summary>
+    /// Show Error
+    /// </summary>
+    /// <param name="errorMessage"></param>
+    public void ShowError(string errorMessage) {
+        lblError.Text = errorMessage;
+    }
+    #endregion
+    #region "private methods"
     /// <summary>
     /// Process Column Click
     /// </summary>
@@ -312,20 +323,30 @@ order by sum(spc.used_pages) desc;
     /// <summary>
     /// Kill
     /// </summary>
+    /// <param name="spids"></param>
+    /// <returns></returns>
+    public void Kill(List<int> spids) {
+        try {
+            using (var db = GetDb())
+                if (db != null)
+                    foreach (var spid in spids)
+                        db.Execute("KILL " + spid.ToString() + ";");
+        } catch (Exception ex) {
+            ShowError(ex.Message);
+        }
+    }
+    /// <summary>
+    /// Kill
+    /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void cmdKill_Click(object sender, EventArgs e) {
         try {
             if (lblError.Text != "") lblError.Text = "";
-            using (var db = GetDb()) {
-                if (db != null) {
-                    foreach (var item in lvwProcesses.SelectedItems) {
-                        db.Execute("KILL " + ((ListViewItem)item).Text);
-                    }
-                }
-            }
+            var f = new frmAreYouSureEndTask(lvwProcesses.SelectedItems, this);
+            f.ShowDialog();
         } catch (Exception ex) {
-            lblError.Text = ex.Message;
+            ShowError(ex.Message);
         }
     }
     /// <summary>
@@ -334,12 +355,16 @@ order by sum(spc.used_pages) desc;
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void frmMain_Load(object sender, EventArgs e) {
-        UpdateNow();
-        UpdateBigTables();
-        tmrRefresh.Interval = Convert.ToInt32(IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "TimerInterval", 1500));
-        tmrBigTablesRefresh.Interval = tmrRefresh.Interval;
-        tmrRefresh.Enabled = true;
-        tmrBigTablesRefresh.Enabled = true;
+        try {
+            UpdateNow();
+            UpdateBigTables();
+            tmrRefresh.Interval = Convert.ToInt32(IniFileHelper.ReadIniInt(_settingsIniFile, "Settings", "TimerInterval", 1500));
+            tmrBigTablesRefresh.Interval = tmrRefresh.Interval;
+            tmrRefresh.Enabled = true;
+            tmrBigTablesRefresh.Enabled = true;
+        } catch (Exception ex) {
+            ShowError(ex.Message);
+        }
     }
     /// <summary>
     /// Big Tables Refresh
@@ -349,4 +374,5 @@ order by sum(spc.used_pages) desc;
     private void tmrBigTablesRefresh_Tick(object sender, EventArgs e) {
         UpdateBigTables();
     }
+    #endregion
 }

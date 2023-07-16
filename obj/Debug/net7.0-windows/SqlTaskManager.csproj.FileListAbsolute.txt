@@ -70,3 +70,4 @@ C:\Users\laiossa\source\repos\SqlTaskManager\obj\Debug\net7.0-windows\refint\Sql
 C:\Users\laiossa\source\repos\SqlTaskManager\obj\Debug\net7.0-windows\SqlTaskManager.pdb
 C:\Users\laiossa\source\repos\SqlTaskManager\obj\Debug\net7.0-windows\SqlTaskManager.genruntimeconfig.cache
 C:\Users\laiossa\source\repos\SqlTaskManager\obj\Debug\net7.0-windows\ref\SqlTaskManager.dll
+C:\Users\laiossa\source\repos\SqlTaskManager\obj\Debug\net7.0-windows\SqlTaskManager.frmAreYouSureEndTask.resources

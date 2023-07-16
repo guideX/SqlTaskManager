@@ -1,4 +1,5 @@
-﻿namespace SqlTaskManager {
+﻿using static System.Windows.Forms.ListView;
+namespace SqlTaskManager {
     /// <summary>
     /// Extension methods for List Views
     /// </summary>
@@ -11,8 +12,19 @@
         public static void SetDoubleBuffered(this System.Windows.Forms.ListView listView, bool doubleBuffered = true) {
             listView
                 .GetType()
-                .GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                .GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)?
                 .SetValue(listView, doubleBuffered, null);
+        }
+        /// <summary>
+        /// To List
+        /// </summary>
+        /// <param name="objs"></param>
+        /// <returns></returns>
+        public static List<ListViewItem> ToList(this SelectedListViewItemCollection objs) {
+            var result = new List<ListViewItem>();
+            foreach (var obj in objs)
+                result.Add((ListViewItem)obj);
+            return result;
         }
     }
 }
