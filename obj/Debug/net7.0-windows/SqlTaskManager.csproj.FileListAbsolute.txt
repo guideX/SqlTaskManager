@@ -71,3 +71,7 @@ C:\Users\laiossa\source\repos\SqlTaskManager\obj\Debug\net7.0-windows\SqlTaskMan
 C:\Users\laiossa\source\repos\SqlTaskManager\obj\Debug\net7.0-windows\SqlTaskManager.genruntimeconfig.cache
 C:\Users\laiossa\source\repos\SqlTaskManager\obj\Debug\net7.0-windows\ref\SqlTaskManager.dll
 C:\Users\laiossa\source\repos\SqlTaskManager\obj\Debug\net7.0-windows\SqlTaskManager.frmAreYouSureEndTask.resources
+C:\Users\laiossa\source\repos\SqlTaskManager\bin\Debug\net7.0-windows\SqlTaskManager.Business.dll
+C:\Users\laiossa\source\repos\SqlTaskManager\bin\Debug\net7.0-windows\SqlTaskManager.Models.dll
+C:\Users\laiossa\source\repos\SqlTaskManager\bin\Debug\net7.0-windows\SqlTaskManager.Business.pdb
+C:\Users\laiossa\source\repos\SqlTaskManager\bin\Debug\net7.0-windows\SqlTaskManager.Models.pdb

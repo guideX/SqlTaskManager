@@ -177,6 +177,33 @@
             "rid": "win"
           }
         }
+      },
+      "SqlTaskManager.Business/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "PetaPoco.Compiled": "6.0.566",
+          "SqlTaskManager.Models": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/SqlTaskManager.Business.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SqlTaskManager.Business.dll": {}
+        }
+      },
+      "SqlTaskManager.Models/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "PetaPoco.Compiled": "6.0.566"
+        },
+        "compile": {
+          "bin/placeholder/SqlTaskManager.Models.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SqlTaskManager.Models.dll": {}
+        }
       }
     }
   },
@@ -624,11 +651,23 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "SqlTaskManager.Business/1.0.0": {
+      "type": "project",
+      "path": "../SqlTaskManager.Business/SqlTaskManager.Business.csproj",
+      "msbuildProject": "../SqlTaskManager.Business/SqlTaskManager.Business.csproj"
+    },
+    "SqlTaskManager.Models/1.0.0": {
+      "type": "project",
+      "path": "../SqlTaskManager.Models/SqlTaskManager.Models.csproj",
+      "msbuildProject": "../SqlTaskManager.Models/SqlTaskManager.Models.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net7.0-windows7.0": [
       "PetaPoco.Compiled >= 6.0.566",
+      "SqlTaskManager.Business >= 1.0.0",
+      "SqlTaskManager.Models >= 1.0.0",
       "System.Data.SqlClient >= 4.8.5"
     ]
   },
@@ -664,7 +703,14 @@
       "frameworks": {
         "net7.0-windows7.0": {
           "targetAlias": "net7.0-windows",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\laiossa\\source\\repos\\SqlTaskManager.Business\\SqlTaskManager.Business.csproj": {
+              "projectPath": "C:\\Users\\laiossa\\source\\repos\\SqlTaskManager.Business\\SqlTaskManager.Business.csproj"
+            },
+            "C:\\Users\\laiossa\\source\\repos\\SqlTaskManager.Models\\SqlTaskManager.Models.csproj": {
+              "projectPath": "C:\\Users\\laiossa\\source\\repos\\SqlTaskManager.Models\\SqlTaskManager.Models.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

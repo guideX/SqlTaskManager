@@ -9,6 +9,8 @@
       "SqlTaskManager/1.0.0": {
         "dependencies": {
           "PetaPoco.Compiled": "6.0.566",
+          "SqlTaskManager.Business": "1.0.0",
+          "SqlTaskManager.Models": "1.0.0",
           "System.Data.SqlClient": "4.8.5"
         },
         "runtime": {
@@ -103,7 +105,24 @@
           "System.Security.Principal.Windows": "4.7.0"
         }
       },
-      "System.Security.Principal.Windows/4.7.0": {}
+      "System.Security.Principal.Windows/4.7.0": {},
+      "SqlTaskManager.Business/1.0.0": {
+        "dependencies": {
+          "PetaPoco.Compiled": "6.0.566",
+          "SqlTaskManager.Models": "1.0.0"
+        },
+        "runtime": {
+          "SqlTaskManager.Business.dll": {}
+        }
+      },
+      "SqlTaskManager.Models/1.0.0": {
+        "dependencies": {
+          "PetaPoco.Compiled": "6.0.566"
+        },
+        "runtime": {
+          "SqlTaskManager.Models.dll": {}
+        }
+      }
     }
   },
   "libraries": {
@@ -195,6 +214,16 @@
       "sha512": "sha512-ojD0PX0XhneCsUbAZVKdb7h/70vyYMDYs85lwEI+LngEONe/17A0cFaRFqZU+sOEidcVswYWikYOQ9PPfjlbtQ==",
       "path": "system.security.principal.windows/4.7.0",
       "hashPath": "system.security.principal.windows.4.7.0.nupkg.sha512"
+    },
+    "SqlTaskManager.Business/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SqlTaskManager.Models/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

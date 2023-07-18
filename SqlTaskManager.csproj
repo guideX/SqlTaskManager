@@ -22,4 +22,9 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SqlTaskManager.Business\SqlTaskManager.Business.csproj" />
+    <ProjectReference Include="..\SqlTaskManager.Models\SqlTaskManager.Models.csproj" />
+  </ItemGroup>
+
 </Project>

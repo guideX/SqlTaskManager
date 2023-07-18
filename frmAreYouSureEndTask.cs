@@ -1,4 +1,5 @@
-﻿using static System.Windows.Forms.ListView;
+﻿using System.Linq;
+using static System.Windows.Forms.ListView;
 namespace SqlTaskManager {
     /// <summary>
     /// Are you sure? End Task
@@ -8,6 +9,9 @@ namespace SqlTaskManager {
         /// Form
         /// </summary>
         private frmMain _form;
+        /// <summary>
+        /// List View Items
+        /// </summary>
         private SelectedListViewItemCollection _listViewItems;
         /// <summary>
         /// Are you Sure (End Task)?
