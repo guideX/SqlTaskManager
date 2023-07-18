@@ -52,6 +52,10 @@
             "PetaPoco.Compiled": {
               "target": "Package",
               "version": "[6.0.566, )"
+            },
+            "System.Diagnostics.PerformanceCounter": {
+              "target": "Package",
+              "version": "[7.0.0, )"
             }
           },
           "imports": [
@@ -118,6 +122,10 @@
             "PetaPoco.Compiled": {
               "target": "Package",
               "version": "[6.0.566, )"
+            },
+            "System.Diagnostics.PerformanceCounter": {
+              "target": "Package",
+              "version": "[7.0.0, )"
             }
           },
           "imports": [
@@ -188,10 +196,6 @@
         "net7.0-windows7.0": {
           "targetAlias": "net7.0-windows",
           "dependencies": {
-            "PetaPoco.Compiled": {
-              "target": "Package",
-              "version": "[6.0.566, )"
-            },
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.5, )"

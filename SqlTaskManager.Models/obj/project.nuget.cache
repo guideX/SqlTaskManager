@@ -1,12 +1,20 @@
 {
   "version": 2,
-  "dgSpecHash": "vhLiLqJOVgqe8qt6uGod93kndYs4JeacTm06qO7nU0CRkiBzjrCL8vQAyZiPhW0CIIYXNBpfQAuVzIDuovHAww==",
+  "dgSpecHash": "hV2FNFnVQZwj6wWrSgUFakIResfUuyIED0cXW8bzKTbueZEcXVuUDWtJzZ+9fde+6qw2lHgUHrSbHSSzOnqcvA==",
   "success": true,
   "projectFilePath": "C:\\devgithub\\SqlTaskManager\\SqlTaskManager.Models\\SqlTaskManager.Models.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\laiossa\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
     "C:\\Users\\laiossa\\.nuget\\packages\\petapoco.compiled\\6.0.566\\petapoco.compiled.6.0.566.nupkg.sha512",
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.configuration.configurationmanager\\7.0.0\\system.configuration.configurationmanager.7.0.0.nupkg.sha512",
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.diagnostics.eventlog\\7.0.0\\system.diagnostics.eventlog.7.0.0.nupkg.sha512",
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.diagnostics.performancecounter\\7.0.0\\system.diagnostics.performancecounter.7.0.0.nupkg.sha512",
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512",
     "C:\\Users\\laiossa\\.nuget\\packages\\system.reflection.emit.ilgeneration\\4.7.0\\system.reflection.emit.ilgeneration.4.7.0.nupkg.sha512",
-    "C:\\Users\\laiossa\\.nuget\\packages\\system.reflection.emit.lightweight\\4.7.0\\system.reflection.emit.lightweight.4.7.0.nupkg.sha512"
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.reflection.emit.lightweight\\4.7.0\\system.reflection.emit.lightweight.4.7.0.nupkg.sha512",
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.security.cryptography.protecteddata\\7.0.0\\system.security.cryptography.protecteddata.7.0.0.nupkg.sha512",
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.security.permissions\\7.0.0\\system.security.permissions.7.0.0.nupkg.sha512",
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.windows.extensions\\7.0.0\\system.windows.extensions.7.0.0.nupkg.sha512"
   ],
   "logs": []
 }

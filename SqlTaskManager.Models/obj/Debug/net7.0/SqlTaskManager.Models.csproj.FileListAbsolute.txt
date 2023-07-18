@@ -10,3 +10,15 @@ C:\Users\laiossa\source\repos\SqlTaskManager.Models\obj\Debug\net7.0\SqlTaskMana
 C:\Users\laiossa\source\repos\SqlTaskManager.Models\obj\Debug\net7.0\refint\SqlTaskManager.Models.dll
 C:\Users\laiossa\source\repos\SqlTaskManager.Models\obj\Debug\net7.0\SqlTaskManager.Models.pdb
 C:\Users\laiossa\source\repos\SqlTaskManager.Models\obj\Debug\net7.0\ref\SqlTaskManager.Models.dll
+C:\devgithub\SqlTaskManager\SqlTaskManager.Models\bin\Debug\net7.0\SqlTaskManager.Models.deps.json
+C:\devgithub\SqlTaskManager\SqlTaskManager.Models\bin\Debug\net7.0\SqlTaskManager.Models.dll
+C:\devgithub\SqlTaskManager\SqlTaskManager.Models\bin\Debug\net7.0\SqlTaskManager.Models.pdb
+C:\devgithub\SqlTaskManager\SqlTaskManager.Models\obj\Debug\net7.0\SqlTaskManager.Models.csproj.AssemblyReference.cache
+C:\devgithub\SqlTaskManager\SqlTaskManager.Models\obj\Debug\net7.0\SqlTaskManager.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\devgithub\SqlTaskManager\SqlTaskManager.Models\obj\Debug\net7.0\SqlTaskManager.Models.AssemblyInfoInputs.cache
+C:\devgithub\SqlTaskManager\SqlTaskManager.Models\obj\Debug\net7.0\SqlTaskManager.Models.AssemblyInfo.cs
+C:\devgithub\SqlTaskManager\SqlTaskManager.Models\obj\Debug\net7.0\SqlTaskManager.Models.csproj.CoreCompileInputs.cache
+C:\devgithub\SqlTaskManager\SqlTaskManager.Models\obj\Debug\net7.0\SqlTaskManager.Models.dll
+C:\devgithub\SqlTaskManager\SqlTaskManager.Models\obj\Debug\net7.0\refint\SqlTaskManager.Models.dll
+C:\devgithub\SqlTaskManager\SqlTaskManager.Models\obj\Debug\net7.0\SqlTaskManager.Models.pdb
+C:\devgithub\SqlTaskManager\SqlTaskManager.Models\obj\Debug\net7.0\ref\SqlTaskManager.Models.dll

@@ -34,11 +34,15 @@ partial class frmMain {
         cmdKill = new Button();
         tabPage2 = new TabPage();
         lvwBigTables = new ListView();
+        tabPage3 = new TabPage();
         mnuFile = new MenuStrip();
         toolStripMenuItem1 = new ToolStripMenuItem();
         settingsToolStripMenuItem = new ToolStripMenuItem();
         tmrRefresh = new System.Windows.Forms.Timer(components);
         tmrBigTablesRefresh = new System.Windows.Forms.Timer(components);
+        label1 = new Label();
+        lblCPU = new Label();
+        tmrPerformance = new System.Windows.Forms.Timer(components);
         tabControl1.SuspendLayout();
         tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -46,6 +50,7 @@ partial class frmMain {
         splitContainer1.Panel2.SuspendLayout();
         splitContainer1.SuspendLayout();
         tabPage2.SuspendLayout();
+        tabPage3.SuspendLayout();
         mnuFile.SuspendLayout();
         SuspendLayout();
         // 
@@ -53,6 +58,7 @@ partial class frmMain {
         // 
         tabControl1.Controls.Add(tabPage1);
         tabControl1.Controls.Add(tabPage2);
+        tabControl1.Controls.Add(tabPage3);
         tabControl1.Dock = DockStyle.Fill;
         tabControl1.Location = new Point(0, 24);
         tabControl1.Name = "tabControl1";
@@ -149,6 +155,18 @@ partial class frmMain {
         lvwBigTables.UseCompatibleStateImageBehavior = false;
         lvwBigTables.View = View.Details;
         // 
+        // tabPage3
+        // 
+        tabPage3.Controls.Add(lblCPU);
+        tabPage3.Controls.Add(label1);
+        tabPage3.Location = new Point(4, 24);
+        tabPage3.Name = "tabPage3";
+        tabPage3.Padding = new Padding(3);
+        tabPage3.Size = new Size(773, 649);
+        tabPage3.TabIndex = 2;
+        tabPage3.Text = "Performance";
+        tabPage3.UseVisualStyleBackColor = true;
+        // 
         // mnuFile
         // 
         mnuFile.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1 });
@@ -182,6 +200,29 @@ partial class frmMain {
         tmrBigTablesRefresh.Interval = 60000;
         tmrBigTablesRefresh.Tick += tmrBigTablesRefresh_Tick;
         // 
+        // label1
+        // 
+        label1.AutoSize = true;
+        label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+        label1.Location = new Point(8, 23);
+        label1.Name = "label1";
+        label1.Size = new Size(48, 25);
+        label1.TabIndex = 0;
+        label1.Text = "CPU";
+        // 
+        // lblCPU
+        // 
+        lblCPU.AutoSize = true;
+        lblCPU.Location = new Point(8, 48);
+        lblCPU.Name = "lblCPU";
+        lblCPU.Size = new Size(38, 15);
+        lblCPU.TabIndex = 1;
+        lblCPU.Text = "(CPU)";
+        // 
+        // tmrPerformance
+        // 
+        tmrPerformance.Tick += tmrPerformance_Tick;
+        // 
         // frmMain
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
@@ -204,6 +245,8 @@ partial class frmMain {
         ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
         splitContainer1.ResumeLayout(false);
         tabPage2.ResumeLayout(false);
+        tabPage3.ResumeLayout(false);
+        tabPage3.PerformLayout();
         mnuFile.ResumeLayout(false);
         mnuFile.PerformLayout();
         ResumeLayout(false);
@@ -225,4 +268,8 @@ partial class frmMain {
     private TabPage tabPage2;
     private ListView lvwBigTables;
     private System.Windows.Forms.Timer tmrBigTablesRefresh;
+    private TabPage tabPage3;
+    private Label label1;
+    private Label lblCPU;
+    private System.Windows.Forms.Timer tmrPerformance;
 }

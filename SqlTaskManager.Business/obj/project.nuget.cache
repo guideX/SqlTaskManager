@@ -1,12 +1,20 @@
 {
   "version": 2,
-  "dgSpecHash": "ed94LG1Qmjfl9UCO5L+lo7VbaNWalAKYSz8M2ngIqRXx/hCwQvrmCtpdTa8I3X3uJieTTlhy+YBIWJcgOKc/Kw==",
+  "dgSpecHash": "tKR2u44N9DLWJplvTtWHMo+H0yoSGo7xTCmOheAtHsCrajryQ8GvZSPqondZSuL2KqaE3AwZQ86lI5pWi0hbXg==",
   "success": true,
   "projectFilePath": "C:\\devgithub\\SqlTaskManager\\SqlTaskManager.Business\\SqlTaskManager.Business.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\laiossa\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
     "C:\\Users\\laiossa\\.nuget\\packages\\petapoco.compiled\\6.0.566\\petapoco.compiled.6.0.566.nupkg.sha512",
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.configuration.configurationmanager\\7.0.0\\system.configuration.configurationmanager.7.0.0.nupkg.sha512",
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.diagnostics.eventlog\\7.0.0\\system.diagnostics.eventlog.7.0.0.nupkg.sha512",
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.diagnostics.performancecounter\\7.0.0\\system.diagnostics.performancecounter.7.0.0.nupkg.sha512",
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512",
     "C:\\Users\\laiossa\\.nuget\\packages\\system.reflection.emit.ilgeneration\\4.7.0\\system.reflection.emit.ilgeneration.4.7.0.nupkg.sha512",
-    "C:\\Users\\laiossa\\.nuget\\packages\\system.reflection.emit.lightweight\\4.7.0\\system.reflection.emit.lightweight.4.7.0.nupkg.sha512"
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.reflection.emit.lightweight\\4.7.0\\system.reflection.emit.lightweight.4.7.0.nupkg.sha512",
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.security.cryptography.protecteddata\\7.0.0\\system.security.cryptography.protecteddata.7.0.0.nupkg.sha512",
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.security.permissions\\7.0.0\\system.security.permissions.7.0.0.nupkg.sha512",
+    "C:\\Users\\laiossa\\.nuget\\packages\\system.windows.extensions\\7.0.0\\system.windows.extensions.7.0.0.nupkg.sha512"
   ],
   "logs": []
 }

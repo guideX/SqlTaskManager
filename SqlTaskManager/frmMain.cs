@@ -1,6 +1,4 @@
 namespace SqlTaskManager;
-
-using System.Data;
 using System.Windows.Forms;
 using SqlTaskManager.Business.Business;
 public partial class frmMain : Form {
@@ -8,7 +6,7 @@ public partial class frmMain : Form {
     /// <summary>
     /// Main Business
     /// </summary>
-    public MainBusiness? MainBusiness;
+    public MainBusiness MainBusiness;
     #endregion
     #region "public methods"
     /// <summary>
@@ -37,7 +35,7 @@ public partial class frmMain : Form {
     /// </summary>
     /// <param name="spids"></param>
     public void Kill(List<int> spids) {
-        MainBusiness?.Kill(spids);
+        MainBusiness.Kill(spids);
     }
     #endregion
     #region "private methods"
@@ -49,7 +47,7 @@ public partial class frmMain : Form {
     private void lvwProcesses_ColumnClick(object? sender, ColumnClickEventArgs e) {
         try {
             tmrRefresh.Enabled = false;
-            MainBusiness?.lvwProcesses_ColumnClick(lvwProcesses, e);
+            MainBusiness.lvwProcesses_ColumnClick(lvwProcesses, e);
         } catch (Exception ex) {
             ShowError(ex.Message);
         }
@@ -61,7 +59,7 @@ public partial class frmMain : Form {
     /// <param name="e"></param>
     private void frmMain_FormClosed(object? sender, FormClosedEventArgs e) {
         try {
-            MainBusiness?.FormClosed(lvwProcesses, this);
+            MainBusiness.FormClosed(lvwProcesses, this);
         } catch (Exception ex) {
             ShowError(ex.Message);
         }
@@ -87,7 +85,7 @@ public partial class frmMain : Form {
     /// <param name="e"></param>
     private void tmrRefresh_Tick(object sender, EventArgs e) {
         try {
-            MainBusiness?.UpdateNow(lvwProcesses);
+            MainBusiness.UpdateNow(lvwProcesses);
         } catch (Exception ex) {
             ShowError(ex.Message);
         }
@@ -101,7 +99,7 @@ public partial class frmMain : Form {
         try {
             if (lblError.Text != "") lblError.Text = "";
             var f = new frmAreYouSureEndTask(lvwProcesses.SelectedItems, this);
-            f.ShowDialog();
+            f.ShowDialog(this);
         } catch (Exception ex) {
             ShowError(ex.Message);
         }
@@ -113,12 +111,14 @@ public partial class frmMain : Form {
     /// <param name="e"></param>
     private void frmMain_Load(object sender, EventArgs e) {
         try {
-            MainBusiness?.UpdateNow(lvwProcesses);
-            MainBusiness?.UpdateBigTables(lvwBigTables);
+            MainBusiness.UpdateNow(lvwProcesses);
+            MainBusiness.UpdateBigTables(lvwBigTables);
             if (MainBusiness != null) tmrRefresh.Interval = Convert.ToInt32(IniFileHelper.ReadIniInt(MainBusiness.SettingsIniFile, "Settings", "TimerInterval", 1500));
+            tmrPerformance.Interval = tmrRefresh.Interval;
             tmrBigTablesRefresh.Interval = tmrRefresh.Interval;
             tmrRefresh.Enabled = true;
             tmrBigTablesRefresh.Enabled = true;
+            tmrPerformance.Enabled = true;
         } catch (Exception ex) {
             ShowError(ex.Message);
         }
@@ -130,8 +130,21 @@ public partial class frmMain : Form {
     /// <param name="e"></param>
     private void tmrBigTablesRefresh_Tick(object sender, EventArgs e) {
         try {
-            MainBusiness?.UpdateBigTables(lvwBigTables);
+            MainBusiness.UpdateBigTables(lvwBigTables);
         } catch (Exception ex) {
+            ShowError(ex.Message);
+        }
+    }
+    /// <summary>
+    /// Performance
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void tmrPerformance_Tick(object sender, EventArgs e) {
+        try {
+            var performance = MainBusiness.GetPerformance();
+            lblCPU.Text = performance.CPU.ToString();
+        } catch(Exception ex) {
             ShowError(ex.Message);
         }
     }

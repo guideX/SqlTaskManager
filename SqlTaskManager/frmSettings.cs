@@ -19,11 +19,23 @@
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void frmSettings_Load(object sender, EventArgs e) {
+            txtServerName.KeyPress += txtServerName_KeyPress;
+            txtServerName.Text = IniFileHelper.ReadIni(_settingsIniFile, "Settings", "ServerName", "");
             txtConnectionString.KeyPress += txtConnectionString_KeyPress;
             txtConnectionString.Text = IniFileHelper.ReadIni(_settingsIniFile, "Settings", "ConnectionString", "");
             txtRefreshInterval.Text = IniFileHelper.ReadIni(_settingsIniFile, "Settings", "RefreshInterval", "1500");
             txtRefreshInterval.KeyPress += txtRefreshInterval_KeyPress;
             this.FormClosing += frmSettings_FormClosing;
+        }
+        /// <summary>
+        /// Server Name KeyPress
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void txtServerName_KeyPress(object? sender, KeyPressEventArgs e) {
+            if (e.KeyChar == (char)13 || e.KeyChar == (char)10) {
+                this.Close();
+            }
         }
         /// <summary>
         /// Refresh Interval KeyPress

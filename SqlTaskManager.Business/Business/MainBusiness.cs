@@ -1,12 +1,9 @@
-﻿//using System.Linq;
-//using PetaPoco;
-//using PetaPoco.Providers;
-using PetaPoco;
-using PetaPoco.Providers;
+﻿using static System.Windows.Forms.ListViewItem;
 using SqlTaskManager.Business.Extensions;
 using System.Windows.Forms;
-using static System.Windows.Forms.ListViewItem;
-//using SqlTaskManager.Business.Business;
+using SqlTaskManager.Models;
+using System.Diagnostics;
+
 namespace SqlTaskManager.Business.Business {
     /// <summary>
     /// Main Business
@@ -25,13 +22,9 @@ namespace SqlTaskManager.Business.Business {
         /// </summary>
         private int _currentColumnSortDirection = 0;
         /// <summary>
-        /// Settings Ini File
-        /// </summary>
-        //public string SettingsIniFile;
-        /// <summary>
         /// Main Business
         /// </summary>
-        public MainBusiness(ListView lvwProcesses, ListView lvwBigTables, Form frm) : base(Application.StartupPath + @"\settings.ini") {
+        public MainBusiness(ListView lvwProcesses, ListView lvwBigTables, Form frm) : base(Application.StartupPath) {
             SettingsIniFile = Application.StartupPath + @"\settings.ini";
             //lvwBigTables.ListViewItemSorter = new ListViewSorter();
             lvwProcesses.Columns.Add(new ColumnHeader() { Text = "SPID", Tag = "Numeric", Width = IniFileHelper.ReadIniInt(SettingsIniFile, "Settings", "SPIDWidth", 100) });
@@ -154,7 +147,6 @@ namespace SqlTaskManager.Business.Business {
             IniFileHelper.WriteIni(SettingsIniFile, "Settings", "MainLeft", frm.Left.ToString());
             IniFileHelper.WriteIni(SettingsIniFile, "Settings", "MainTop", frm.Top.ToString());
         }
-
         /// <summary>
         /// Update Big Tables
         /// </summary>
@@ -274,6 +266,17 @@ order by sum(spc.used_pages) desc;
                     }
                 }
             }
+        }
+        /// <summary>
+        /// Get Statistics
+        /// </summary>
+        /// <returns></returns>
+        public PerformanceStatisticModel GetPerformance() {
+            var result = new PerformanceStatisticModel();
+#pragma warning disable CA1416 // Validate platform compatibility
+            result.CPU = new PerformanceCounter("Processor", "% Processor Time", "_Total").NextValue();
+#pragma warning restore CA1416 // Validate platform compatibility
+            return result;
         }
     }
 }

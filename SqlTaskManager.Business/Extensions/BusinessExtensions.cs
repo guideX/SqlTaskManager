@@ -2,9 +2,9 @@
 using PetaPoco;
 namespace SqlTaskManager.Business.Extensions {
     public abstract class BusinessExtensions {
-        public required string SettingsIniFile;
-        public BusinessExtensions(string settingsIniFile) {
-            SettingsIniFile = settingsIniFile;
+        public string SettingsIniFile;
+        public BusinessExtensions(string applicationStartupPath) {
+            SettingsIniFile = applicationStartupPath + @"\settings.ini";
         }
         /// <summary>
         /// Get Db
