@@ -1,6 +1,7 @@
 namespace SqlTaskManager;
 using System.Windows.Forms;
 using SqlTaskManager.Business.Business;
+using SqlTaskManager.Business.Helpers;
 public partial class frmMain : Form {
     #region "private variables"
     /// <summary>
@@ -114,10 +115,10 @@ public partial class frmMain : Form {
             MainBusiness.UpdateNow(lvwProcesses);
             MainBusiness.UpdateBigTables(lvwBigTables);
             if (MainBusiness != null) tmrRefresh.Interval = Convert.ToInt32(IniFileHelper.ReadIniInt(MainBusiness.SettingsIniFile, "Settings", "TimerInterval", 1500));
-            tmrPerformance.Interval = tmrRefresh.Interval;
-            tmrBigTablesRefresh.Interval = tmrRefresh.Interval;
             tmrRefresh.Enabled = true;
+            tmrBigTablesRefresh.Interval = tmrRefresh.Interval;
             tmrBigTablesRefresh.Enabled = true;
+            tmrPerformance.Interval = tmrRefresh.Interval;
             tmrPerformance.Enabled = true;
         } catch (Exception ex) {
             ShowError(ex.Message);
@@ -142,11 +143,14 @@ public partial class frmMain : Form {
     /// <param name="e"></param>
     private void tmrPerformance_Tick(object sender, EventArgs e) {
         try {
-            var performance = MainBusiness.GetPerformance();
-            lblCPU.Text = performance.CPU.ToString();
+            UpdatePerformance();
         } catch(Exception ex) {
             ShowError(ex.Message);
         }
+    }
+    private void UpdatePerformance() {
+        var pc = PerformanceCounterHelper.GetCpu("LEON_DT");
+        if (pc != null) lblCPU.Text = pc.Value.ToString();
     }
     #endregion
 }
